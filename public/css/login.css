@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,800;1,300;1,400;1,600&display=swap');
+ 
+* {
+    padding: 0;
+    margin: 0;
+    font-family: open sans;  
+    box-sizing: border-box;
+    color: white;
+}
+
+body {
+    background-image: radial-gradient(136.03% 54.57% at 50% 48.04%, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0) 60.63%, #080A0B 99.74%), url(../asset/the-games-bg.jpg);
+}
+
+.row .col-md-4 {
+    margin: 27vh auto;
+    align-items: center;
+    box-shadow:  2px 2px 5px rgba(255, 248, 248, 0.507);
+}
+
+.col-md-4 h2 {
+    text-align: center;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 64px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.col-md-4 form input {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.btn.btn-warning {
+    margin: 10px !important;
+    width: 130px;
+    height: 45px;
+    text-align: center;
+}
+
+.btn.btn-info {
+    margin: 10px !important;
+    width: 130px;
+    height: 45px;
+    text-align: center;
+}
+
+.alert {
+    color: black;
+}
+

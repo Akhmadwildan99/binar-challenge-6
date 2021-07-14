@@ -1,0 +1,45 @@
+  <body>
+    <section id="game-rock-paper-scissors">
+        <header class="header">
+            <ul>
+                <a href="/"><li class="navigasi"><</li></a>
+                <a href="#"><li class="logo"><img src="assets/logo 1.jpg" alt=""></li></a>
+                <a href="#"><li class="title">ROCK PAPER SCISSORS</li></a>
+            </ul>
+        </header>
+        <div class="container">
+          <div class="row">
+            <div class="col-4">
+              <h1 class="title-player">PLAYER 1</h1>
+              <ul class="player">
+                <li><img id="img-p-batu" src="assets/batu.png" class="batu"></li>
+                <li><img id="img-p-kertas" src="assets/kertas.png" class="kertas"></li>
+                <li><img id="img-p-gunting" src="assets/gunting.png" class="gunting"></li>
+              </ul>
+            </div>
+            <div class="col-4">
+                <div class="hasil">
+                  <h1 class="vs">vs</h1>
+                  <div class="result hidden">
+                    menang
+                  </div>
+                  <img src="assets/refresh.png" class="refresh">
+                </div>
+            </div>
+            <div class="col-4">
+              <h1 class="title-com">COM</h1>
+              <ul class="com">
+                <li><img id="img-com-batu" src="assets/batu.png" class="batu"></li>
+                <li><img id="img-com-kertas" src="assets/kertas.png" class="kertas"></li>
+                <li><img id="img-com-gunting" src="assets/gunting.png" class="gunting"></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </section>
+
+
+
+    <!-- vanila javascript -->
+    <%- include('gameRules') %> 
+
