@@ -44,7 +44,17 @@ app.post('/landingpage', [
             throw new Error('Password tidak valid!');
         }
         return true;
+    }),
+    body('nama').custom(async(value)=>{
+        const findNama = await Admin.findOne({
+            where: {nama: value}
+        });
+        if(!findNama){
+            throw new Error('Nama tidak valid!');
+        }
+        return true;
     })
+
     ],
     (req, res) => {
         const errors = validationResult(req);
@@ -58,11 +68,6 @@ app.post('/landingpage', [
         } else {
             req.flash('msg', 'Masuk Sebagai admin!'); 
             res.redirect('/landingpage');
-            // .then(()=>{
-            //     req.flash('msg', 'Masuk Sebagai admin!'); 
-            // }).catch(err=>{
-            //     res.status(422).json("Can't login")
-            // })
         }
     }
 );
