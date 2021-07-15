@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
-const { body, validationResult, check, Result } = require('express-validator');
+const { body, validationResult, check } = require('express-validator');
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
@@ -56,12 +56,13 @@ app.post('/landingpage', [
                 errors: errors.array()
             });
         } else {
-            res.redirect('/landingpage')
-            .then(()=>{
-                req.flash('msg', 'Masuk Sebagai admin!'); 
-            }).catch(err=>{
-                res.status(422).json("Can't login")
-            })
+            req.flash('msg', 'Masuk Sebagai admin!'); 
+            res.redirect('/landingpage');
+            // .then(()=>{
+            //     req.flash('msg', 'Masuk Sebagai admin!'); 
+            // }).catch(err=>{
+            //     res.status(422).json("Can't login")
+            // })
         }
     }
 );
@@ -127,6 +128,8 @@ app.get('/landingpage', (req, res)=>{
         msg: req.flash('msg'),
     });
 });
+
+// Halaman Data user / Contact User
 
 // Port listen
 app.listen(port, () =>{
