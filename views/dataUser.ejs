@@ -1,0 +1,47 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/landingpage">&laquo;kembali ke landingpage</a>
+    </div>
+</nav>
+<div class="container mt-3">
+    <h2>Daftar User</h2>
+    <% if (msg.length !== 0 ) { %>
+        <div class="alert alert-success" role="alert">
+            <%= msg %> 
+          </div>
+    <% } %>
+    <a href="/dataUser/tambah" class="btn btn-primary">Tambah Data User</a>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">emails</th>
+                    <th scope="col">Details</th>
+                </tr>
+                </thead>
+                <% if (user.length === 0) { %>
+                    <tr>
+                        <th colspan="4">
+                            <div class="alert alert-danger" role="alert">
+                                Data User masih kossong!
+                            </div>
+                        </th>
+                    </tr>
+                <% } %>
+                <% user.forEach((datauser, i )=> { %>
+                    <tbody>
+                    <tr>
+                        <th scope="row"><%= i + 1  %> </th>
+                        <td><%= datauser.nama  %> </td>
+                        <td><%= datauser.email %> </td>
+                        <td><a href="/contact/<%= datauser.nama %>" type="button" class="badge badge-pill btn btn-info">details</a></td>
+                    </tr>
+                    </tbody>
+                <% }) %>
+            </table>
+        </div>
+    </div>
+</div> 

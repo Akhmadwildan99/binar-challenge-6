@@ -5,7 +5,7 @@ const { body, validationResult, check } = require('express-validator');
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
-const {Admin} = require('./models')
+const {Admin, User} = require('./models')
 const port = 8081
 
 
@@ -135,6 +135,69 @@ app.get('/landingpage', (req, res)=>{
 });
 
 // Halaman Data user / Contact User
+app.get('/dataUser', async (req, res)=>{
+    const user = await User.findAll();
+    res.render('dataUser',{
+        title: 'Halaman Data User',
+        css: '',
+        layout: 'layouts/main-layouts',
+        user,
+        msg: req.flash('msg'),
+    });
+});
+
+// Halaman tambah data User
+app.get('/dataUser/tambah', (req, res)=>{
+    res.render('dataUser-add',{
+        title: 'Halaman Tambah Data User',
+        css: 'css/login.css',
+        layout: 'layouts/main-layouts'
+    });
+});
+
+// Proses Tambah data
+app.post('/dataUser',  [
+    body('nama').custom(async(value)=>{
+        const findName = await User.findOne({
+            where: {nama: value}
+        });
+        if(findName){
+            throw new Error('Username sudah digunakan!');
+        }
+        return true;
+    }),
+    check('email', 'Email tidak valid!').isEmail(),
+    check('password')
+    .isLength({ min: 5 })
+    .withMessage('Password harus berisi minimal lima karakter!')
+    .matches(/\d/)
+    .withMessage('Harus terdapat karakter angka untuk proteksi!')
+    ], 
+    (req, res)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        // return res.status(400).json({ errors: errors.array() });
+        res.render('dataUser-add',{
+            layout: 'layouts/main-layouts',
+            title: 'Halaman Tambah Data User',
+            css: 'css/login.css',
+            errors: errors.array()
+        });
+    } else {
+        User.create({
+            nama: req.body.nama,
+            password: req.body.password,
+            email: req.body.email
+        }).then((admin)=>{
+            req.flash('msg', 'Data User bersail ditambahkan!');
+            res.redirect('/dataUser');
+        }).catch(err => {
+            res.status(422).json("Can't add Admin")
+        })
+    }
+}
+);
+
 
 // Port listen
 app.listen(port, () =>{
