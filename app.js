@@ -219,10 +219,31 @@ app.post('/dataUser/updatedata/:id',(req, res)=>{
             id:req.params.id
         }})
         .then(()=>{
+            req.flash('msg', 'Data user bersail diedit!');
             res.redirect('/dataUser');
         })
 }
 );
+
+// Proses delete Data user
+app.get('/dataUser/delete/:id', (req, res)=>{
+    const user = User.findOne({
+        where: {id: req.params.id}
+    });
+    if(!user){
+        res.status(404);
+        res.send('<h1>404</h1>');
+    } else {
+        User.destroy({
+            where: {id: req.params.id}
+        }).then((result)=>{
+            req.flash('msg', 'Data user bersail dihapus!');
+            res.redirect('/dataUser');
+        }).catch(err=>{
+            res.status(422).json("Can't delete contact")
+        });
+    }
+});
 
 
 
