@@ -136,12 +136,12 @@ app.get('/landingpage', (req, res)=>{
 
 // Halaman Data user / Contact User
 app.get('/dataUser', async (req, res)=>{
-    const user = await User.findAll();
+    const users = await User.findAll();
     res.render('dataUser',{
         title: 'Halaman Data User',
         css: '',
         layout: 'layouts/main-layouts',
-        user,
+        users,
         msg: req.flash('msg'),
     });
 });
@@ -189,7 +189,7 @@ app.post('/dataUser',  [
             password: req.body.password,
             email: req.body.email
         }).then((admin)=>{
-            req.flash('msg', 'Data User bersail ditambahkan!');
+            req.flash('msg', 'Data User berhasi ditambahkan!');
             res.redirect('/dataUser');
         }).catch(err => {
             res.status(422).json("Can't add Admin")
@@ -197,6 +197,33 @@ app.post('/dataUser',  [
     }
 }
 );
+
+// Halaman edit data user
+app.get('/dataUser/edit/:id',  (req, res)=>{
+    const userid =  req.params.id;
+    res.render('dataUser-edit',{
+        title: 'Halaman Edit Data User',
+        css: 'css/login.css',
+        layout: 'layouts/main-layouts',
+        userid,
+    });
+});
+
+// Proses edit data User
+app.post('/dataUser/updatedata/:id',(req, res)=>{
+        User.update({
+            nama: req.body.nama,
+            password: req.body.password,
+            email: req.body.email
+        }, {where:{
+            id:req.params.id
+        }})
+        .then(()=>{
+            res.redirect('/dataUser');
+        })
+}
+);
+
 
 
 // Port listen
