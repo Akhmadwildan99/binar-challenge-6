@@ -5,7 +5,7 @@ const { body, validationResult, check } = require('express-validator');
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
-const {Admin, User} = require('./models')
+const {Admin, User, Biodata} = require('./models')
 const port = 8081
 
 
@@ -189,7 +189,7 @@ app.post('/dataUser',  [
             password: req.body.password,
             email: req.body.email
         }).then((admin)=>{
-            req.flash('msg', 'Data User berhasi ditambahkan!');
+            req.flash('msg', 'Data User berhasil ditambahkan!');
             res.redirect('/dataUser');
         }).catch(err => {
             res.status(422).json("Can't add Admin")
@@ -198,6 +198,8 @@ app.post('/dataUser',  [
 }
 );
 
+
+
 // Halaman edit data user
 app.get('/dataUser/edit/:id',  (req, res)=>{
     const userid =  req.params.id;
@@ -205,25 +207,67 @@ app.get('/dataUser/edit/:id',  (req, res)=>{
         title: 'Halaman Edit Data User',
         css: 'css/login.css',
         layout: 'layouts/main-layouts',
-        userid,
+        userid
     });
 });
+
 
 // Proses edit data User
 app.post('/dataUser/updatedata/:id',(req, res)=>{
         User.update({
             nama: req.body.nama,
             password: req.body.password,
-            email: req.body.email
+            email: req.body.email,
         }, {where:{
             id:req.params.id
         }})
         .then(()=>{
-            req.flash('msg', 'Data user bersail diedit!');
+            req.flash('msg', 'Data user berhasil diedit!');
             res.redirect('/dataUser');
         })
 }
 );
+
+// Halaman tambah biodata
+app.get('/biodata/add/:id',  (req, res)=>{
+    const userid = req.params.id
+    res.render('biodata',{
+        title: 'Halaman Tambah Biodata User',
+        css: '',
+        layout: 'layouts/main-layouts',
+        userid
+
+    });
+});
+
+app.post('/biodata/add/:id',
+    [check('nohp', 'No HP tidak valid!').isMobilePhone('id-ID')],
+    (req,res)=>{
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            res.render('biodata',{
+                layout: 'layouts/main-layouts',
+                title: 'Halaman Tambah Biodata User',
+                css: '',
+                errors: errors.array()
+            });
+        } else {
+            Biodata.create({
+                user_id: req.params.id,
+                nohp: req.body.nohp,
+                hobi: req.body.hobi,
+                alamat: req.body.alamat,
+            }).then((admin)=>{
+                req.flash('msg', 'Biodata User berhasil ditambahkan!');
+                res.redirect('/dataUser');
+            }).catch(err => {
+                res.status(422).json("Can't add Biodata")
+            })
+        }
+
+});
+
+
 
 // Proses delete Data user
 app.get('/dataUser/delete/:id', (req, res)=>{
@@ -237,7 +281,7 @@ app.get('/dataUser/delete/:id', (req, res)=>{
         User.destroy({
             where: {id: req.params.id}
         }).then((result)=>{
-            req.flash('msg', 'Data user bersail dihapus!');
+            req.flash('msg', 'Data user berhasil dihapus!');
             res.redirect('/dataUser');
         }).catch(err=>{
             res.status(422).json("Can't delete contact")

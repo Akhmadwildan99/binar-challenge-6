@@ -21,11 +21,12 @@
                     <th scope="col">emails</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Edit</th>
+                    <th scope="col">Biodata</th>
                 </tr>
                 </thead>
                 <% if (users.length === 0) { %>
                     <tr>
-                        <th colspan="5">
+                        <th colspan="6">
                             <div class="alert alert-danger" role="alert">
                                 Data User masih kossong!
                             </div>
@@ -38,8 +39,9 @@
                         <th scope="row"><%= i + 1  %> </th>
                         <td><%= user.nama  %> </td>
                         <td><%= user.email %> </td>
-                        <td><a href="/dataUser/delete/<%= user.id %>" type="button" class="badge badge-pill btn btn-info">hapus</a></td>
+                        <td><a href="/dataUser/delete/<%= user.id %>" type="button" class="badge badge-pill btn btn-danger" onclick="return confirm('yakin?');">hapus</a></td>
                         <td><a href="/dataUser/edit/<%= user.id %>" type="button" class="badge badge-pill btn btn-info">edit</a></td>
+                        <td><a href="/biodata/add/<%= user.id %>" type="button" class="badge badge-pill btn btn-success">biodata</a></td>
                     </tr>
                     </tbody>
                 <% }) %>
