@@ -201,32 +201,37 @@ app.post('/dataUser',  [
 
 
 // Halaman edit data user
-app.get('/dataUser/edit/:id',  (req, res)=>{
+app.get('/dataUser/edit/:id', async (req, res)=>{
+    const user = await User.findOne({
+        where:{id: req.params.id}
+    });
     const userid =  req.params.id;
     res.render('dataUser-edit',{
         title: 'Halaman Edit Data User',
         css: 'css/login.css',
         layout: 'layouts/main-layouts',
-        userid
+        userid,
+        user
     });
 });
 
 
 // Proses edit data User
-app.post('/dataUser/updatedata/:id',(req, res)=>{
-        User.update({
-            nama: req.body.nama,
-            password: req.body.password,
-            email: req.body.email,
-        }, {where:{
-            id:req.params.id
-        }})
-        .then(()=>{
-            req.flash('msg', 'Data user berhasil diedit!');
-            res.redirect('/dataUser');
-        })
-}
-);
+app.post('/dataUser/updatedata/:id', (req, res)=>{
+    User.update({
+        nama: req.body.nama,
+        password: req.body.password,
+        email: req.body.email,
+    }, {where:{
+        id:req.params.id
+    }})
+    .then(()=>{
+        req.flash('msg', 'Data user berhasil diedit!');
+        res.redirect('/dataUser');
+    })
+});
+
+
 
 // Halaman tambah biodata
 app.get('/biodata/add/:id',  (req, res)=>{
@@ -240,31 +245,18 @@ app.get('/biodata/add/:id',  (req, res)=>{
     });
 });
 
-app.post('/biodata/add/:id',
-    [check('nohp', 'No HP tidak valid!').isMobilePhone('id-ID')],
-    (req,res)=>{
-        const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            res.render('biodata',{
-                layout: 'layouts/main-layouts',
-                title: 'Halaman Tambah Biodata User',
-                css: '',
-                errors: errors.array()
-            });
-        } else {
-            Biodata.create({
-                user_id: req.params.id,
-                nohp: req.body.nohp,
-                hobi: req.body.hobi,
-                alamat: req.body.alamat,
-            }).then((admin)=>{
-                req.flash('msg', 'Biodata User berhasil ditambahkan!');
-                res.redirect('/dataUser');
-            }).catch(err => {
-                res.status(422).json("Can't add Biodata")
-            })
-        }
-
+app.post('/biodata/add/:id',(req,res)=>{
+    Biodata.create({
+        user_id: req.params.id,
+        nohp: req.body.nohp,
+        hobi: req.body.hobi,
+        alamat: req.body.alamat,
+    }).then(()=>{
+        req.flash('msg', 'Biodata User berhasil ditambahkan!');
+        res.redirect('/dataUser');
+    }).catch(err => {
+        res.status(422).json("Can't add Biodata")
+    });
 });
 
 
@@ -284,9 +276,31 @@ app.get('/dataUser/delete/:id', (req, res)=>{
             req.flash('msg', 'Data user berhasil dihapus!');
             res.redirect('/dataUser');
         }).catch(err=>{
-            res.status(422).json("Can't delete contact")
+            res.status(422).json("Can't delete data user")
         });
     }
+});
+
+app.get('/details/:id', async (req, res)=>{
+    const user = await User.findOne({
+        where: {id: req.params.id}
+    });
+    const biodata = await Biodata.findOne({where:{
+        user_id: req.params.id
+    }});
+    if(!biodata) {
+        res.status(404);
+        res.send('<h1>404</h1>');
+    } else{
+        res.render('details',{
+            title: 'Halaman detail tentang User',
+            css: '',
+            layout: 'layouts/main-layouts',
+            user,
+            biodata
+        });
+    }
+    
 });
 
 

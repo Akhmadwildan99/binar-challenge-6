@@ -19,7 +19,7 @@
                     <th scope="col">No</th>
                     <th scope="col">Nama</th>
                     <th scope="col">emails</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col">Detail</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Biodata</th>
                 </tr>
@@ -39,7 +39,7 @@
                         <th scope="row"><%= i + 1  %> </th>
                         <td><%= user.nama  %> </td>
                         <td><%= user.email %> </td>
-                        <td><a href="/dataUser/delete/<%= user.id %>" type="button" class="badge badge-pill btn btn-danger" onclick="return confirm('yakin?');">hapus</a></td>
+                        <td><a href="/details/<%= user.id %>" type="button" class="badge badge-pill btn btn-primary" >detail</a></td>
                         <td><a href="/dataUser/edit/<%= user.id %>" type="button" class="badge badge-pill btn btn-info">edit</a></td>
                         <td><a href="/biodata/add/<%= user.id %>" type="button" class="badge badge-pill btn btn-success">biodata</a></td>
                     </tr>

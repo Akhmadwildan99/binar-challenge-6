@@ -1,0 +1,23 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card text-center">
+                <div class="card-header">
+                  <h2>Detail Data User</h2>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">Nama: <%= user.nama %> </h5>
+                  <h5 class="card-title">Email: <%= user.email %> </h5>
+                  <h5 class="card-title">Password: <%= user.password %> </h5>
+                  <h5 class="card-title">Mobaile Phone: <%= biodata.nohp %> </h5>
+                  <h5 class="card-title">Hobies: <%= biodata.hobi %> </h5>
+                  <h5 class="card-title">Alamat: <%= biodata.alamat %> </h5>
+                  <a href="/dataUser/delete/<%= user.id %>" type="button" class="badge badge-pill btn btn-danger" onclick="return confirm('yakin?');">hapus</a>
+                </div>
+                <div class="card-footer text-muted">
+                  <%= user.nama %> 
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
