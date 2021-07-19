@@ -5,6 +5,7 @@ const { body, validationResult, check } = require('express-validator');
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
+const api = require('./api/api');
 const {Admin, User, Biodata, Device} = require('./models')
 const port = 8081
 
@@ -24,6 +25,7 @@ app.use(
     })
 );
 app.use(flash());
+app.use(api); //api
 
 // Halaman Login Super Admin
 app.get('/', (req, res)=>{
