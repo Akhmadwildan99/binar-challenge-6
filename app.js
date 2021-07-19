@@ -245,18 +245,27 @@ app.get('/biodata/add/:id',  (req, res)=>{
     });
 });
 
-app.post('/biodata/add/:id',(req,res)=>{
-    Biodata.create({
-        user_id: req.params.id,
-        nohp: req.body.nohp,
-        hobi: req.body.hobi,
-        alamat: req.body.alamat,
-    }).then(()=>{
-        req.flash('msg', 'Biodata User berhasil ditambahkan!');
-        res.redirect('/dataUser');
-    }).catch(err => {
-        res.status(422).json("Can't add Biodata")
+app.post('/biodata/add/:id', async (req,res)=>{
+    const biodata = await Biodata.findOne({
+        where:{user_id: req.params.id}
     });
+    if(!biodata) {
+        Biodata.create({
+            user_id: req.params.id,
+            nohp: req.body.nohp,
+            hobi: req.body.hobi,
+            alamat: req.body.alamat,
+        }).then((biodata)=>{
+            req.flash('msg', 'Biodata User berhasil ditambahkan!');
+            res.redirect('/dataUser');
+        }).catch(err => {
+            res.status(422).json("Can't add Biodata")
+        });
+    } else {
+        res.status(404);
+        res.send('<h1>Biodata sudah ada</h1>');
+    }
+  
 });
 
 
@@ -272,7 +281,14 @@ app.get('/dataUser/delete/:id', (req, res)=>{
     } else {
         User.destroy({
             where: {id: req.params.id}
-        }).then((result)=>{
+        }).then(()=>{
+            Biodata.destroy({
+                where:{user_id: req.params.id}
+            }).then(() =>{
+                req.flash('msg', 'Data biodata user berhasil dihapus!');
+            }).catch(err=>{
+                res.status(422).json("Can't delete biodata data user") 
+            })
             req.flash('msg', 'Data user berhasil dihapus!');
             res.redirect('/dataUser');
         }).catch(err=>{
@@ -290,7 +306,7 @@ app.get('/details/:id', async (req, res)=>{
     }});
     if(!biodata) {
         res.status(404);
-        res.send('<h1>404</h1>');
+        res.send('<h1>Mohon isi biodata dulu </h1>');
     } else{
         res.render('details',{
             title: 'Halaman detail tentang User',
