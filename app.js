@@ -164,7 +164,7 @@ app.get('/dataUser', async (req, res)=>{
 app.get('/dataUser/tambah', (req, res)=>{
     res.render('dataUser-add',{
         title: 'Halaman Tambah Data User',
-        css: 'css/login.css',
+        css: '',
         layout: 'layouts/main-layouts'
     });
 });
@@ -222,7 +222,7 @@ app.get('/dataUser/edit/:id', async (req, res)=>{
     const userid =  req.params.id;
     res.render('dataUser-edit',{
         title: 'Halaman Edit Data User',
-        css: 'css/login.css',
+        css: '',
         layout: 'layouts/main-layouts',
         userid,
         user
