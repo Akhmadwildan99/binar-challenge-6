@@ -5,7 +5,7 @@ const { body, validationResult, check } = require('express-validator');
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
-const {Admin, User, Biodata} = require('./models')
+const {Admin, User, Biodata, Device} = require('./models')
 const port = 8081
 
 
@@ -31,6 +31,15 @@ app.get('/', (req, res)=>{
         title: 'Halaman Login',
         css: 'css/login.css',
         layout: 'layouts/main-layouts'
+    });
+});
+
+// Halaman trial Games
+app.get('/game', (req, res)=>{
+    res.render('game', {
+        title: 'Trial Game',
+        css: 'css/game.css',
+        layout: 'layouts/main-layouts',
     });
 });
 
@@ -255,7 +264,7 @@ app.post('/biodata/add/:id', async (req,res)=>{
             nohp: req.body.nohp,
             hobi: req.body.hobi,
             alamat: req.body.alamat,
-        }).then((biodata)=>{
+        }).then(()=>{
             req.flash('msg', 'Biodata User berhasil ditambahkan!');
             res.redirect('/dataUser');
         }).catch(err => {
@@ -264,6 +273,39 @@ app.post('/biodata/add/:id', async (req,res)=>{
     } else {
         res.status(404);
         res.send('<h1>Biodata sudah ada</h1>');
+    }
+  
+});
+
+// Halaman user Device 
+app.get('/device/add/:id',  (req, res)=>{
+    const userid = req.params.id
+    res.render('device',{
+        title: 'Halaman Tambah Device User',
+        css: '',
+        layout: 'layouts/main-layouts',
+        userid
+
+    });
+});
+
+app.post('/device/add/:id', async (req,res)=>{
+    const device = await Device.findOne({
+        where:{user_id: req.params.id}
+    });
+    if(!device) {
+        Device.create({
+            user_id: req.params.id,
+            perangkat: req.body.perangkat,
+        }).then(()=>{
+            req.flash('msg', 'Device User berhasil ditambahkan!');
+            res.redirect('/dataUser');
+        }).catch(err => {
+            res.status(422).json("Can't add Biodata")
+        });
+    } else {
+        res.status(404);
+        res.send('<h1>Device sudah ada</h1>');
     }
   
 });
@@ -285,7 +327,13 @@ app.get('/dataUser/delete/:id', (req, res)=>{
             Biodata.destroy({
                 where:{user_id: req.params.id}
             }).then(() =>{
-                req.flash('msg', 'Data biodata user berhasil dihapus!');
+                Device.destroy({
+                    where:{user_id: req.params.id}
+                }).then(()=>{
+                    req.flash('msg', 'Device user berhasil dihapus!');
+                }).catch(err=>{
+                    res.status(422).json("Can't delete device  user") 
+                })
             }).catch(err=>{
                 res.status(422).json("Can't delete biodata data user") 
             })
@@ -304,16 +352,20 @@ app.get('/details/:id', async (req, res)=>{
     const biodata = await Biodata.findOne({where:{
         user_id: req.params.id
     }});
-    if(!biodata) {
+    const device = await Device.findOne({where:{
+        user_id: req.params.id
+    }});
+    if(!biodata || !device) {
         res.status(404);
-        res.send('<h1>Mohon isi biodata dulu </h1>');
+        res.send('<h1>Mohon isi biodata dan device terlebih dulu </h1>');
     } else{
         res.render('details',{
             title: 'Halaman detail tentang User',
             css: '',
             layout: 'layouts/main-layouts',
             user,
-            biodata
+            biodata,
+            device
         });
     }
     

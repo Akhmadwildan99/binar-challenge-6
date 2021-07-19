@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Halaman Tambah Device User</h2>
+          
+            <form method="POST" action="/device/add/<%= userid %>">
+                <div class="mb-3">
+                  <label for="perangkat" class="form-label">Perangkat</label>
+                  <input type="text" class="form-control" id="perangkat" name="perangkat">
+                </div>
+                <button  type="submit" class="btn btn-info rounded-pill btn-lg d-block mt-3">Tambah
+                </button>
+              </form>
+        </div>
+    </div>
+</div>

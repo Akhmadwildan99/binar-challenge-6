@@ -22,6 +22,7 @@
                     <th scope="col">Detail</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Biodata</th>
+                    <th scope="col">Device</th>
                 </tr>
                 </thead>
                 <% if (users.length === 0) { %>
@@ -42,6 +43,7 @@
                         <td><a href="/details/<%= user.id %>" type="button" class="badge badge-pill btn btn-primary" >detail</a></td>
                         <td><a href="/dataUser/edit/<%= user.id %>" type="button" class="badge badge-pill btn btn-info">edit</a></td>
                         <td><a href="/biodata/add/<%= user.id %>" type="button" class="badge badge-pill btn btn-success">biodata</a></td>
+                        <td><a href="/device/add/<%= user.id %>" type="button" class="badge badge-pill btn btn-warning">device</a></td>
                     </tr>
                     </tbody>
                 <% }) %>

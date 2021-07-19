@@ -210,6 +210,39 @@
     100% {rotate: 360%;}
 }
 
+/* Score */
+.score_P1 {
+    display: flex;
+    justify-content: center;
+    width: 160px;
+    height: 80px;
+    background: #f7f7f7c2;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 38px;
+    line-height: 52px;
+    text-align: center;
+    align-items: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #020202;
+}
+
+.time {
+    display: flex;
+    justify-content: center;
+    width: 160px;
+    height: 80px;
+    background: #f7f7f7c2;
+    border-radius: 10px;
+    font-size: 25px;
+    line-height: 52px;
+    text-align: center;
+    align-items: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #020202;
+}
 
 /* responsive */
 
