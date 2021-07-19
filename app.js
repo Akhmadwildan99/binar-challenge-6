@@ -6,7 +6,8 @@ const session = require('express-session');
 const cookieParser = require("cookie-parser");
 const flash = require('connect-flash');
 const api = require('./api/api');
-const {Admin, User, Biodata, Device} = require('./models')
+const {Admin, User, Biodata, Device} = require('./models');
+const router = require('./utils/router')
 const port = 8081
 
 
@@ -14,6 +15,7 @@ app.set('view engine', 'ejs');// Gunakan ejs
 app.use(express.static('public'));// Built-in Midleware
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(router);
 app.use(expressLayouts);// third party midlleware
 app.use(cookieParser('secret'));// Konfigurasi flash
 app.use(
@@ -26,6 +28,7 @@ app.use(
 );
 app.use(flash());
 app.use(api); //api
+
 
 // Halaman Login Super Admin
 app.get('/', (req, res)=>{
@@ -371,6 +374,26 @@ app.get('/details/:id', async (req, res)=>{
         });
     }
     
+});
+
+// error Handling
+
+app.use((err, req, res, next)=>{
+    res.status(500);
+    res.render('err', {
+        title: 'Halaman error',
+        css: 'css/error.css',
+        layout: 'layouts/main-layouts'
+    });
+});
+
+app.use((req, res, next)=>{
+    res.status(404);
+    res.render('notfound', {
+        title: 'Halaman error',
+        css: 'css/error.css',
+        layout: 'layouts/main-layouts'
+    });
 });
 
 
