@@ -13,9 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       this.hasOne(models.Biodata, {
         foreignKey: 'user_id'
       });
-      this.hasOne(models.Device,{
-        foreignKey: 'user_id'
-      });
     }
   };
   User.init({
